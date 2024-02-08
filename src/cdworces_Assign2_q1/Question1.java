@@ -38,6 +38,15 @@ public class Question1 {
 		return files[0];
 	}
 
+	public static final GraphNode FindNode(String name, List<GraphNode> nodeList) {
+		GraphNode found = nodeList.stream().filter(item -> item.getName().equals(name)).findFirst().orElse(null);
+		if (found == null) {
+			System.err.println("Couldn't find the node named " + name + " in provided list.");
+//			throw new Exception("Couldn't find the node named " + name + " in provided list.");
+		}
+		return found;
+	}
+
 	public static GraphNode CreateGraph() {
 		// for each line after "Node, Heuristic", create the node and assign int value
 		// save each node in a list (easily searched by name)
@@ -47,7 +56,7 @@ public class Question1 {
 		// add [target, distance] to neighbors
 
 		// Step 1: Create nodes. Step 2: Link nodes to form graph
-		List<GraphNode> nodes = new ArrayList<GraphNode>();
+		List<GraphNode> nodes = new ArrayList<>();
 		int step = 0;
 		GraphNode currentNode = null;
 
@@ -77,21 +86,24 @@ public class Question1 {
 
 				// TODO make sure pair[1] is an int
 				nodes.add(new GraphNode(parts[0], Integer.parseInt(parts[1])));
-				System.out.println("Created node " + nodes.get(nodes.size() - 1).name + " with h of "
-						+ nodes.get(nodes.size() - 1).heuristic);
+//				System.out.println("Created node " + nodes.get(nodes.size() - 1));
 			} else if (step == 2) {
 				// TODO make sure pair[2] is an int
 
-				if (currentNode != null && parts[0].equals(currentNode.name)) {
-
+				// If the source node on this line is NOT the current node
+				if (currentNode == null || !parts[0].equals(currentNode.getName())) {
+					// Find the node in the list
+					currentNode = FindNode(parts[0], nodes);
 				}
 
-				currentNode = nodes.stream().filter(item -> item.name.equals(parts[0])).findFirst().orElse(null);
-//				if current node is null
-
+				GraphNode target = FindNode(parts[1], nodes);
+				currentNode.addNeighbor(target, Integer.parseInt(parts[2]));
 			}
 
-//			System.out.println(line);
+		}
+
+		for (GraphNode n : nodes) {
+			System.out.println(n.toString());
 		}
 
 		// TODO fix this to return S
