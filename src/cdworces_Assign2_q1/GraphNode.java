@@ -12,7 +12,7 @@ import java.util.Map;
  */
 public class GraphNode {
 
-	char name; // is this necessary?
+	String name;
 	int heuristic;
 	// neighboring cities and their distances
 	Map<GraphNode, Integer> neighbors = new HashMap<>();
@@ -20,7 +20,7 @@ public class GraphNode {
 	/**
 	 * 
 	 */
-	public GraphNode(char name, int heuristic) {
+	public GraphNode(String name, int heuristic) {
 		this.name = name;
 		this.heuristic = heuristic;
 	}
