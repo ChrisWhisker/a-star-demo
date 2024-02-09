@@ -1,0 +1,29 @@
+Node, Heuristic
+S, 40
+E, 45
+F, 20
+B, 50
+C, 19
+D, 18
+H, 5
+J, 10
+I, 20
+G1, 0
+G2, 0
+
+source, target, distance
+S, D, 10
+S, B, 5
+S, C, 20
+S, F, 10
+S, E, 15
+E, G1, 50
+F, H, 15
+J, G1, 15
+H, J, 30
+C, H, 5
+B, C, 25
+D, I, 5
+B, I, 30
+I, G2, 25
+H, G2, 20
