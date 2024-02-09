@@ -12,10 +12,45 @@ import java.util.Map;
  */
 public class GraphNode {
 
-	private String name;
+	// the node that traversed before this one in the shortest path
+//	public GraphNode parentNode;
+	
+	public String fullPath = "";
+	
+	private String name = "";
+	
+	/**
+	 * Estimated cost from this node to the goal: h(n)
+	 */
 	private int heuristic;
-	// neighboring cities and their distances
-	private Map<GraphNode, Integer> neighbors = new HashMap<>();
+	
+	/**
+	 * Actual cost to move from start to this node: g(n)
+	 */
+	private int distanceFromStart;
+	
+	/**
+	 * Whether distanceFromStart has been assigned.
+	 */
+	private boolean distanceSet = false;
+	
+	/**
+	 * Combined score: f(n) = g(n) + h(n)
+	 */
+	public int pathCost() throws Exception {
+		if (!distanceSet) {
+			throw new Exception("Can't calculate path cost until distance has been set.");
+		}
+		return heuristic + distanceFromStart;
+	}
+	
+	/**
+	 * String representation of the path from the start node to this node
+	 */
+	//	private String fullPath;
+	
+	// neighboring nodes and their distances
+	private Map<GraphNode, Integer> edges = new HashMap<>();
 
 	/**
 	 * Constructor
@@ -33,30 +68,49 @@ public class GraphNode {
 	public int getHeuristic() {
 		return heuristic;
 	}
-
-	public Map<GraphNode, Integer> getNeighbors() {
-		return neighbors;
+	
+	public int getDistanceFromStart() {
+		return distanceFromStart;
 	}
 
+	public Map<GraphNode, Integer> getEdges() {
+		return edges;
+	}
+	
+
+//	public String getFullPath() {
+//		return fullPath;
+//	}
+	
+	// Setters
+	public void setDistanceFromStart(int dist) {
+		distanceFromStart = dist;
+		distanceSet = true;
+	}
+	
 	// Add bi-directional edge between this node and other
-	public void addNeighbor(GraphNode other, int distance) {
-		if (this.neighbors.containsKey(other)) {
+	public void addEdge(GraphNode other, int distance) {
+		if (this.edges.containsKey(other)) {
 			return;
 		}
-		this.neighbors.put(other, distance);
-		other.addNeighbor(this, distance);
+		this.edges.put(other, distance);
+		other.addEdge(this, distance);
 	}
 
 	@Override
 	public String toString() {
-		String s = "GraphNode [name=" + name + ", heuristic=" + heuristic + ", neighbors={ ";
+		String s = "Node " + name + ": [h = " + heuristic + ", edges = { ";
 
-		for (Map.Entry<GraphNode, Integer> neighbor : neighbors.entrySet()) {
-			s = s + "\n\t[name=" + neighbor.getKey().name + ", distance=" + neighbor.getValue() + "]";
+		for (Map.Entry<GraphNode, Integer> edge : edges.entrySet()) {
+			s = s + "\n\t[" + edge.getKey().name + ", distance = " + edge.getValue() + "]";
 		}
 
 		s = s + "\n}]";
 		return s;
 	}
+
+//	public void setFullPath(String path) {
+//		this.fullPath = path;
+//	}
 
 }
