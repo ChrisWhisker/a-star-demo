@@ -19,9 +19,9 @@ import java.util.Scanner;
 public class q1 {
 
 	public static void main(String[] args) throws IOException {
-		GraphNode startNode = CreateGraph(args[0]);
-		String result = Navigate(startNode);
-		WriteSolutionFile(result, args[0]);
+		GraphNode startNode = createGraph(args[0]);
+		String result = navigate(startNode);
+		writeSolutionFile(result, args[0]);
 	}
 
 	// ********** Primary methods **********
@@ -33,7 +33,7 @@ public class q1 {
 	 * @return The starting node.
 	 * @throws IOException If the provided file is not found.
 	 */
-	private static GraphNode CreateGraph(String fileName) throws IOException {
+	private static GraphNode createGraph(String fileName) throws IOException {
 		List<GraphNode> nodes = new ArrayList<>();
 		int step = 0; // Track the current step: Step 1: Create nodes. Step 2: Link nodes to form
 						// graph.
@@ -84,9 +84,9 @@ public class q1 {
 //				 If the source node on this line is NOT the current node
 				if (currentNode == null || !parts[0].equals(currentNode.getName())) {
 //					 Find the node in the list
-					currentNode = FindNode(parts[0], nodes);
+					currentNode = findNode(parts[0], nodes);
 				}
-				GraphNode target = FindNode(parts[1], nodes);
+				GraphNode target = findNode(parts[1], nodes);
 				currentNode.addEdge(target, Integer.parseInt(parts[2]));
 			}
 		}
@@ -104,7 +104,7 @@ public class q1 {
 	 * @param start The node to begin navigation from.
 	 * @return A string representing the nodes traversed in the optimal path and the distance traveled.
 	 */
-	private static String Navigate(GraphNode start) {
+	private static String navigate(GraphNode start) {
 		ArrayList<GraphNode> frontier = new ArrayList<>(); // open neighbor nodes
 		ArrayList<GraphNode> closed = new ArrayList<>(); // nodes that have been fully explored
 
@@ -160,7 +160,7 @@ public class q1 {
 	 * @param solution The text to write.
 	 * @param inputFile The name of the input file that describes the graph.
 	 */
-	private static void WriteSolutionFile(String solution, String inputFile) {
+	private static void writeSolutionFile(String solution, String inputFile) {
 		String directoryPath = "./Q1/Solutions";
 
 //		 Create the sub-folder if it doesn't exist
@@ -192,7 +192,7 @@ public class q1 {
 	 * @param nodeList List to search in.
 	 * @return The node.
 	 */
-	private static final GraphNode FindNode(String name, List<GraphNode> nodeList) {
+	private static final GraphNode findNode(String name, List<GraphNode> nodeList) {
 		GraphNode found = nodeList.stream().filter(item -> item.getName().equals(name)).findFirst().orElse(null);
 		if (found == null) {
 			System.err.println("Couldn't find the node named " + name + " in provided list.");
